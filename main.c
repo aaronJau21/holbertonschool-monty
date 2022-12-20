@@ -1,53 +1,46 @@
 #include "monty.h"
-stack_t *head = NULL;
 
 /**
- * main - Entry Point
- * @argc: Number of command line arguments.
- * @argv: An array containing the arguments.
- * Return: Always Zero.
+ * push - pushes an element to the stack
+ * @stack: the stack
+ * @line_number: instruction line number
+ * Return: nothing
  */
-int main(int argc, char **argv)
+
+void push(stack_t **stack, unsigned int line_number)
 {
-	if (argc < 2 || argc > 2)
-		err(1);
-	open_file(argv[1]);
-	free_nodes();
-	return (0);
-}
+	stack_t *new, *temp = *stack;
+	int number, bol = 0, i = 0;
 
-/**
- * free_nodes - Frees nodes in the stack.
- */
-void free_nodes(void)
-{
-	stack_t *tmp;
+	for (; argument[0][i]; i++)
+		bol = _isalpha((int)argument[0][i]);
 
-	if (head == NULL)
-		return;
-
-	while (head != NULL)
+	if (bol != 0)
 	{
-		tmp = head;
-		head = head->next;
-		free(tmp);
+		dprintf(STDERR_FILENO, "L%d: usage: push integer\n", line_number);
+		argument[0] = "FAIL";
+		return; }
+	number = atoi(argument[0]);
+	new = malloc(sizeof(stack_t));
+	if (!new)
+	{
+		dprintf(STDERR_FILENO, "Error: malloc failed\n");
+		argument[0] = "FAIL";
+		return; }
+	new->n = number;
+	if (strcmp(argument[1], "queue") == 0)
+	{
+		if (temp)
+			temp->next = new;
+		else
+			*stack = new;
 	}
-}
-
-/**
- * create_node - Creates and populates a node.
- * @n: Number to go inside the node.
- * Return: Upon sucess a pointer to the node. Otherwise NULL.
- */
-stack_t *create_node(int n)
-{
-	stack_t *node;
-
-	node = malloc(sizeof(stack_t));
-	if (node == NULL)
-		err(4);
-	node->next = NULL;
-	node->prev = NULL;
-	node->n = n;
-    return (node);
+	else
+	{
+		new->next = *stack;
+		new->prev = NULL;
+		if (*stack)
+			(*stack)->prev = new;
+		*stack = new;
+	}
 }
