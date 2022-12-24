@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 {
 	if (argc != 2)
 	{
-		printf("Uso: %s <nombre_archivo>\n", argv[0]);
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 	open_file(argv[1]);
@@ -48,7 +48,10 @@ stack_t *create_node(int n)
 
 	node = malloc(sizeof(stack_t));
 	if (node == NULL)
-		err(4);
+	{
+	fprintf(stderr, "Error: malloc failed\n");
+	exit(EXIT_FAILURE);
+	}
 	node->next = NULL;
 	node->prev = NULL;
 	node->n = n;
