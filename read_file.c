@@ -83,6 +83,19 @@ int interpret_line(char *lineptr, int line_number, int format)
 		return (1);
 	else if (strcmp(opcode, "stack") == 0)
 		return (0);
+	
+	if (strcmp(opcode, "push") == 0)
+	{
+		if (value == NULL)
+			err(5, line_number);
+
+		// Verifica que el argumento sea un número entero
+		for (int i = 0; value[i] != '\0'; i++)
+		{
+			if (isdigit(value[i]) == 0)
+				err(5, line_number);
+		}
+	}
 
 	find_func(opcode, value, line_number, format);
 	return (format);
