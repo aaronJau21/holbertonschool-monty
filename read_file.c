@@ -174,9 +174,9 @@ void call_fun(op_func f, char *op, char *val, int ln, int format)
 			flag = -1;
 		}
 		/*val is not a digit is the return value is 0*/
-		if (val == NULL)
+		if (val == NULL || isdigit(val[0]) == 0)
 			err(5, ln);
-		for (i = 0; val[i] != '\0'; i++)
+		for (i = 1; val[i] != '\0'; i++)
 		{
 			if (isdigit(val[i]) == 0)
 				err(5, ln);
